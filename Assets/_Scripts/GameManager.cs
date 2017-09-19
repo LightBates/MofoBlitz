@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		//Creates the Map
 		gameObject.GetComponent<MapGen>().Boardmaker();
 	}
 	
