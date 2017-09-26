@@ -7,6 +7,11 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		Screen.autorotateToLandscapeRight = false;
+		Screen.autorotateToPortrait = false;
+		Screen.autorotateToPortraitUpsideDown = false;
+		Screen.orientation = ScreenOrientation.LandscapeLeft;
+
 		//Creates the Map
 		gameObject.GetComponent<MapGen>().Boardmaker();
 	}

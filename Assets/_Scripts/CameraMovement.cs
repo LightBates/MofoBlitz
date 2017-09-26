@@ -1,52 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour {
 
-	Vector3 adjustment;
+	GameObject player;
+	float adjustment;
+	public GameObject DEBUG;
 
 	// Use this for initialization
 	void Start () {
-
-		//Sets a base adjustment so if the phone starts angled the camera doesn't start scrolling
-		adjustment = new Vector3(Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
-
-		//enables gyroscope
-		Input.gyro.enabled = true;
+		adjustment = Input.gyro.rotationRateUnbiased.z;
+		player = GameObject.Find("Player1");
 		
 	}
 
-	/// <summary>
-	/// A function for re-zeroing the accelerometer adjustment
-	/// </summary>
-	public void Zero()
-	{
-		adjustment = new Vector3(Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);		
-	}
-	
-	// Update is called once per frame
-	void Update () {
 
-		///Camera Controls for Cylinderboard
+	void FixedUpdate () {
 
-		transform.Translate(0f, Input.acceleration.z - adjustment.z, 0f);
-		transform.Rotate(0f, -Input.gyro.rotationRateUnbiased.y, 0f);
+		gameObject.GetComponent<Transform>().position = new Vector3(player.transform.position.x, player.transform.position.y, 0f);
 
-		///Camera Controls for Flatboard
+		//Quaternion rot = Input.gyro.attitude;
+		//Vector3 rotEuler = rot.eulerAngles;
+		//Vector3 rotCurrent = transform.rotation.eulerAngles;
+		//rot.eulerAngles = new Vector3(rotCurrent.x, rotCurrent.y, rotEuler.z);
 
-		//transform.Translate(-Input.gyro.rotationRateUnbiased.y / 8, Input.acceleration.z - adjustment.z, 0f);
+		//gameObject.GetComponent<Transform>().rotation = rot;
 
-		///Maintains Upper and Lower Y Bounds
-		if (transform.position.y > 10)
-			transform.SetPositionAndRotation(new Vector3(transform.position.x, 10f, transform.position.z), transform.rotation);
-		else if (transform.position.y < 0)
-			transform.SetPositionAndRotation(new Vector3(transform.position.x, 0f, transform.position.z), transform.rotation);
-		///Maintians Upper and Lower X Bounds (FLATBOARD ONLY)
-		//if (transform.position.x > 18)
-		//	transform.SetPositionAndRotation(new Vector3(18f, transform.position.y, transform.position.z), transform.rotation);
-		//else if (transform.position.x < -18)
-		//	transform.SetPositionAndRotation(new Vector3(-18f, transform.position.y, transform.position.z), transform.rotation);
+		//float rotateplz = Input.gyro.rotationRateUnbiased.z;
+		//transform.Rotate(Vector3.forward, rotateplz);
+
+		
+		Quaternion rot;
+		if (Input.gyro.gravity.normalized.x < 0)
+			rot = Quaternion.Euler(0f, 0f, (180 / Mathf.PI) * Mathf.Acos(-Input.gyro.gravity.normalized.y));
+		else
+			rot = Quaternion.Euler(0f, 0f, -((180 / Mathf.PI) * Mathf.Acos(-Input.gyro.gravity.normalized.y)));
+		gameObject.GetComponent<Transform>().rotation = rot;
+
+		DEBUG.GetComponent<Text>().text = "Y Grav N: " + (Input.gyro.gravity.y).ToString() + "\nZ Grav N: " + (Input.gyro.gravity.z).ToString() + "\nX Grav N: " + (Input.gyro.gravity.x).ToString()
+			+ "\nY Gyro: " + (Input.gyro.rotationRateUnbiased.y).ToString() + "\nZ Gyro: " + (Input.gyro.rotationRateUnbiased.z).ToString() + "\nX Gyro: " + (Input.gyro.rotationRateUnbiased.x).ToString();
+		
 
 	}
 }
