@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour {
 		//float rotateplz = Input.gyro.rotationRateUnbiased.z;
 		//transform.Rotate(Vector3.forward, rotateplz);
 
-		
+
 		Quaternion rot;
 		if (Input.gyro.gravity.normalized.x < 0)
 			rot = Quaternion.Euler(0f, 0f, (180 / Mathf.PI) * Mathf.Acos(-Input.gyro.gravity.normalized.y));
@@ -39,8 +39,21 @@ public class CameraMovement : MonoBehaviour {
 			rot = Quaternion.Euler(0f, 0f, -((180 / Mathf.PI) * Mathf.Acos(-Input.gyro.gravity.normalized.y)));
 		gameObject.GetComponent<Transform>().rotation = rot;
 
-		DEBUG.GetComponent<Text>().text = "Y Grav N: " + (Input.gyro.gravity.y).ToString() + "\nZ Grav N: " + (Input.gyro.gravity.z).ToString() + "\nX Grav N: " + (Input.gyro.gravity.x).ToString()
-			+ "\nY Gyro: " + (Input.gyro.rotationRateUnbiased.y).ToString() + "\nZ Gyro: " + (Input.gyro.rotationRateUnbiased.z).ToString() + "\nX Gyro: " + (Input.gyro.rotationRateUnbiased.x).ToString();
+		Quaternion attit = Input.gyro.attitude;
+		Vector3 DebugAtt = attit.eulerAngles;
+
+
+
+		DEBUG.GetComponent<Text>().text =
+			"Y Grav: " + (Input.gyro.gravity.y).ToString() + " Y Grav N: " + (Input.gyro.gravity.normalized.y).ToString() +
+			"\nZ Grav: " + (Input.gyro.gravity.z).ToString() + " Z Grav N: " + (Input.gyro.gravity.normalized.z).ToString() +
+			"\nX Grav: " + (Input.gyro.gravity.x).ToString() + " X Grav N: " + (Input.gyro.gravity.normalized.x).ToString() +
+			"\nY Gyro: " + DebugAtt.y.ToString() +
+			"\nZ Gyro: " + DebugAtt.z.ToString() +
+			"\nX Gyro: " + DebugAtt.x.ToString() +
+			"\nY Gyro: " + (Input.gyro.rotationRateUnbiased.y).ToString() + 
+			"\nZ Gyro: " + (Input.gyro.rotationRateUnbiased.z).ToString() +
+			"\nX Gyro: " + (Input.gyro.rotationRateUnbiased.x).ToString();
 		
 
 	}
