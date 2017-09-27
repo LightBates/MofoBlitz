@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		mainCamera = GameObject.Find ("MainCamera");
 		rb2d = gameObject.GetComponent<Rigidbody2D>();
 
 		//enables gyroscope
@@ -23,15 +23,17 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		Vector3 camrot = mainCamera.transform.rotation.eulerAngles;
+		float camzrad = camrot.z * Mathf.PI / 180;
 
 		//COMPUTER CONTROLS
 		//float horiz = Input.GetAxis("Horizontal");
 		//float vert = Input.GetAxis("Vertical");
 
 		//MOBILE CONTROLS
-		float horiz = -Input.gyro.rotationRateUnbiased.y * .5f;
+		float horiz = (Mathf.Sin(camzrad)*(-Input.gyro.rotationRateUnbiased.y) + Mathf.Cos(camzrad)*(Input.gyro.rotationRateUnbiased.x)) * speed;
 		//float vert = (Input.acceleration.z - adjustment.z) * 1f;
-		float vert = Input.gyro.rotationRateUnbiased.x * .5f;
+		float vert = (Mathf.Cos(camzrad)*(-Input.gyro.rotationRateUnbiased.y) + Mathf.Sin(camzrad)*(Input.gyro.rotationRateUnbiased.x)) * speed;
 
 
 

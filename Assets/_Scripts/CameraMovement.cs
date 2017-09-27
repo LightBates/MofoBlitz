@@ -32,12 +32,24 @@ public class CameraMovement : MonoBehaviour {
 		//transform.Rotate(Vector3.forward, rotateplz);
 
 
-		Quaternion rot;
-		if (Input.gyro.gravity.normalized.x < 0)
-			rot = Quaternion.Euler(0f, 0f, (180 / Mathf.PI) * Mathf.Acos(-Input.gyro.gravity.normalized.y));
-		else
-			rot = Quaternion.Euler(0f, 0f, -((180 / Mathf.PI) * Mathf.Acos(-Input.gyro.gravity.normalized.y)));
+		//-cos(y)*cos(x) + sin(z)*cos(x)???? -cos(z)cos(x
+
+		Vector3 gravnorm = Input.gyro.gravity.normalized;
+
+		Quaternion rot = Quaternion.Euler (0f, 0f, (180 / Mathf.PI) * (Mathf.Acos (-gravnorm.y) * Mathf.Acos (gravnorm.x)
+			+ Mathf.Asin(gravnorm.z) * Mathf.Acos(gravnorm.x)));
 		gameObject.GetComponent<Transform>().rotation = rot;
+
+		//Backup of attempt at z fix
+		//Quaternion rot;
+		//if (Input.gyro.gravity.normalized.x < 0)
+		//	rot = Quaternion.Euler(0f, 0f, (180 / Mathf.PI) * (Mathf.Acos(-gravnorm.y)
+		//		+ Mathf.Abs(Mathf.Asin(-gravnorm.z))));
+		//else
+		//	rot = Quaternion.Euler(0f, 0f, -(180 / Mathf.PI) * (Mathf.Acos(-gravnorm.y)
+		//		+ Mathf.Abs(Mathf.Asin(-gravnorm.z))));
+		//gameObject.GetComponent<Transform>().rotation = rot;
+
 
 		Quaternion attit = Input.gyro.attitude;
 		Vector3 DebugAtt = attit.eulerAngles;
