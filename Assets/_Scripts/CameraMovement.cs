@@ -31,8 +31,8 @@ public class CameraMovement : MonoBehaviour {
 		//float rotateplz = Input.gyro.rotationRateUnbiased.z;
 		//transform.Rotate(Vector3.forward, rotateplz);
 
-
-		//-cos(y)*cos(x) + sin(z)*cos(x)???? -cos(z)cos(x
+		//Formula ideas for sure rotation.
+		//-cos(y)*cos(x) + sin(z)*cos(x)???? -cos(z)sin(y)?
 
 		Vector3 gravnorm = Input.gyro.gravity.normalized;
 
