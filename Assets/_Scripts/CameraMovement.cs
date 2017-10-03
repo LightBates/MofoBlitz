@@ -35,9 +35,16 @@ public class CameraMovement : MonoBehaviour {
 		//-cos(y)*cos(x) + sin(z)*cos(x)???? -cos(z)sin(y)?
 
 		Vector3 gravnorm = Input.gyro.gravity.normalized;
-
-		Quaternion rot = Quaternion.Euler (0f, 0f, (180 / Mathf.PI) * (Mathf.Acos (-gravnorm.y) * Mathf.Acos (gravnorm.x)
-			+ Mathf.Asin(gravnorm.z) * Mathf.Acos(gravnorm.x)));
+		float newAngle;
+		if (gravnorm.y < 0)
+			newAngle = (180 / Mathf.PI) * Mathf.Atan(gravnorm.x / -Mathf.Abs(gravnorm.y));
+		else if (gravnorm.y > 0)
+			newAngle = 180 - (180 / Mathf.PI) * Mathf.Atan(gravnorm.x / -Mathf.Abs(gravnorm.y));
+		else
+			newAngle = 0;
+		//Quaternion rot = Quaternion.Euler (0f, 0f, (180 / Mathf.PI) * (Mathf.Acos (-gravnorm.y) * Mathf.Acos (gravnorm.x)
+		//	+ Mathf.Asin(gravnorm.z) * Mathf.Acos(gravnorm.x)));
+		Quaternion rot = Quaternion.Euler(0f, 0f, newAngle);
 		gameObject.GetComponent<Transform>().rotation = rot;
 
 		//Backup of attempt at z fix
@@ -57,7 +64,8 @@ public class CameraMovement : MonoBehaviour {
 
 
 		DEBUG.GetComponent<Text>().text =
-			"Y Grav: " + (Input.gyro.gravity.y).ToString() + " Y Grav N: " + (Input.gyro.gravity.normalized.y).ToString() +
+			"ANGLE:" + newAngle +
+			"\nY Grav: " + (Input.gyro.gravity.y).ToString() + " Y Grav N: " + (Input.gyro.gravity.normalized.y).ToString() +
 			"\nZ Grav: " + (Input.gyro.gravity.z).ToString() + " Z Grav N: " + (Input.gyro.gravity.normalized.z).ToString() +
 			"\nX Grav: " + (Input.gyro.gravity.x).ToString() + " X Grav N: " + (Input.gyro.gravity.normalized.x).ToString() +
 			"\nY Gyro: " + DebugAtt.y.ToString() +

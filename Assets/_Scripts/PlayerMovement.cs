@@ -31,9 +31,9 @@ public class PlayerMovement : MonoBehaviour {
 		//float vert = Input.GetAxis("Vertical");
 
 		//MOBILE CONTROLS
-		float horiz = (Mathf.Sin(camzrad)*(-Input.gyro.rotationRateUnbiased.y) + Mathf.Cos(camzrad)*(Input.gyro.rotationRateUnbiased.x)) * speed;
+		float vert = (Mathf.Sin(camzrad)*(-Input.gyro.rotationRateUnbiased.y) + Mathf.Cos(camzrad)*(Input.gyro.rotationRateUnbiased.x)) * speed;
 		//float vert = (Input.acceleration.z - adjustment.z) * 1f;
-		float vert = (Mathf.Cos(camzrad)*(-Input.gyro.rotationRateUnbiased.y) + Mathf.Sin(camzrad)*(Input.gyro.rotationRateUnbiased.x)) * speed;
+		float horiz = (Mathf.Cos(camzrad)*(-Input.gyro.rotationRateUnbiased.y) + Mathf.Sin(camzrad)*(Input.gyro.rotationRateUnbiased.x)) * speed;
 
 
 
