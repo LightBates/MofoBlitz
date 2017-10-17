@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour {
 		Screen.autorotateToPortrait = false;
 		Screen.autorotateToPortraitUpsideDown = false;
 		Screen.orientation = ScreenOrientation.LandscapeLeft;
-
-		//Creates the Map
-		gameObject.GetComponent<MapGen>().Boardmaker();
 	}
 	
 	// Update is called once per frame
