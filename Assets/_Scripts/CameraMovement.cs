@@ -6,19 +6,18 @@ using UnityEngine.UI;
 public class CameraMovement : MonoBehaviour {
 
 	GameObject player;
-	//public GameObject DEBUG;
+	float speed;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find("Player1");
-		
+		speed = 7f;
 	}
 
 
 	void FixedUpdate () {
 
-		gameObject.GetComponent<Transform>().position = new Vector3(player.transform.position.x, player.transform.position.y, -13f);
-
+		//gameObject.GetComponent<Transform>().position = new Vector3(player.transform.position.x, player.transform.position.y, -13f);
 
 		// Gets the Gyroscope Normalized Data
 		Vector3 gravnorm = Input.gyro.gravity.normalized;
@@ -39,23 +38,24 @@ public class CameraMovement : MonoBehaviour {
 
 
 
-		//Quaternion attit = Input.gyro.attitude;
-		//Vector3 DebugAtt = attit.eulerAngles;
 
 
+		//Gets the current camera rotation to calculate the angle adjustment on the axes controls
+		Vector3 camrot = transform.rotation.eulerAngles;
+		float camzrad = camrot.z * Mathf.PI / 180;
 
-		//DEBUG.GetComponent<Text>().text =
-		////	"ANGLE:" + newAngle +
-		////	"\nY Grav: " + (Input.gyro.gravity.y).ToString() + " Y Grav N: " + (Input.gyro.gravity.normalized.y).ToString() +
-		////	"\nZ Grav: " + (Input.gyro.gravity.z).ToString() + " Z Grav N: " + (Input.gyro.gravity.normalized.z).ToString() +
-		////	"\nX Grav: " + (Input.gyro.gravity.x).ToString() + " X Grav N: " + (Input.gyro.gravity.normalized.x).ToString() +
-		//"\nY Gyro: " + DebugAtt.y.ToString() +
-		//"\nZ Gyro: " + DebugAtt.z.ToString() +
-		//"\nX Gyro: " + DebugAtt.x.ToString() +
-		//"\nY Gyro: " + (Input.gyro.rotationRateUnbiased.y).ToString() +
-		//"\nZ Gyro: " + (Input.gyro.rotationRateUnbiased.z).ToString() +
-		//"\nX Gyro: " + (Input.gyro.rotationRateUnbiased.x).ToString();
+		//COMPUTER CONTROLS
+		//float horiz = Input.GetAxis("Horizontal");
+		//float vert = Input.GetAxis("Vertical");
 
+		//MOBILE CONTROLS
+		float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
+		float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
+		float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate));
+		float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));
 
+		//Player Movement
+		Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);
+		gameObject.GetComponent<Rigidbody2D>().MovePosition(targetPos);
 	}
 }

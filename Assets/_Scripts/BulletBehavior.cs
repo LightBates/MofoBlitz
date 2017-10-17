@@ -22,10 +22,7 @@ public class BulletBehavior : MonoBehaviour {
 			case "Enemy":
 				Destroy(collider.gameObject);
 				Destroy(gameObject);
-				break;
-			case "Player":
-				//DealDamage
-				Destroy(gameObject);
+				GameManager.score++;
 				break;
 			case "Bullet":
 				Destroy(gameObject);

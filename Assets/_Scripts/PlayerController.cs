@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D rb2d;
 	Vector3 adjustment;
 	public float speed;
+	public float health;
 
 	public Transform shotSpawn;
 	public GameObject bullet;
@@ -20,69 +21,77 @@ public class PlayerController : MonoBehaviour {
 	{
 		mainCamera = GameObject.Find("Main Camera");
 		rb2d = gameObject.GetComponent<Rigidbody2D>();
+		health = 100;
 		
 
 		//enables gyroscope
 		Input.gyro.enabled = true;
 
+		//Make sure you can move
 		if (speed <= 0)
-			speed = .5f;
+			speed = 2f;
 
 	}
 	
 	void Update()
 	{
+		//Rotates to match the camera
 		Quaternion camrot = mainCamera.transform.rotation;
 		transform.rotation = camrot;
 
+		Vector2 targetPos = mainCamera.transform.position;
+		Vector2 targetVec = targetPos - (Vector2)transform.position;
+		if (targetVec.magnitude < 1)
+		{
+			rb2d.MovePosition(targetPos);
+		}
+		else
+		{
+			rb2d.velocity = targetVec.normalized * speed;
+		}
 
+		//If enough time has passed between shots and the shot input is entered, fire a shot
 		if (Time.time > nextShot && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) | Input.GetKeyDown(KeyCode.Space)))
 		{
 			nextShot = Time.time + fireRate;
-			Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
+			Instantiate(bullet, shotSpawn);
 		}
+	}
+
+	void OnTriggerEnter2D(Collider2D collider)
+	{
+		if (collider.gameObject.tag == "Bullet")
+		{
+			health -= 25;
+			Destroy(collider.gameObject);
+		}
+
 	}
 
 	void FixedUpdate()
 	{
-		Vector3 camrot = mainCamera.transform.rotation.eulerAngles;
-		float camzrad = camrot.z * Mathf.PI / 180;
+		////Gets the current camera rotation to calculate the angle adjustment on the axes controls
+		//Vector3 camrot = mainCamera.transform.rotation.eulerAngles;
+		//float camzrad = camrot.z * Mathf.PI / 180;
 
-		//COMPUTER CONTROLS
-		//float horiz = Input.GetAxis("Horizontal");
-		//float vert = Input.GetAxis("Vertical");
+		////COMPUTER CONTROLS
+		////float horiz = Input.GetAxis("Horizontal");
+		////float vert = Input.GetAxis("Vertical");
 
+		////MOBILE CONTROLS
+		//float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
+		//float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
+		//float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate)) * speed;
+		//float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (xRate)) * speed;
 
-		float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
-		float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
-
-		//MOBILE CONTROLS
-		float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate)) * speed;
-		float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (xRate)) * speed;
-
-		Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);
-
-		rb2d.MovePosition(targetPos);
-		//transform.localPosition += new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);
+		////Player Movement
+		//Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);
+		//rb2d.MovePosition(targetPos);
 
 
-		//Camera Controls for Cylinderboard
-		//transform.Translate(0f, (Input.acceleration.z - adjustment.z) / 2f, 0f);
-		//transform.Rotate(0f, -Input.gyro.rotationRateUnbiased.y, 0f);
-
-		//Camera Controls for Flatboard
-		//transform.Translate(-Input.gyro.rotationRateUnbiased.y / 8f, (Input.acceleration.z - adjustment.z) / 8f, 0f);
-
-		//		//Maintains Upper and Lower Y Bounds
-		//		if (transform.position.y > 10)
-		//			transform.SetPositionAndRotation(new Vector3(transform.position.x, 10f, transform.position.z), transform.rotation);
-		//		else if (transform.position.y < 0)
-		//			transform.SetPositionAndRotation(new Vector3(transform.position.x, 0f, transform.position.z), transform.rotation);
-
-		//		//Maintians Upper and Lower X Bounds(FLATBOARD ONLY)
-		//		if (transform.position.x > 18)
-		//			transform.SetPositionAndRotation(new Vector3(18f, transform.position.y, transform.position.z), transform.rotation);
-		//		else if (transform.position.x < -18)
-		//			transform.SetPositionAndRotation(new Vector3(-18f, transform.position.y, transform.position.z), transform.rotation);
+		//Player Movement
+		//Vector3 targetPos = mainCamera.transform.position;
+		//rb2d.velocity = (targetPos - transform.position).normalized * speed;
+		//rb2d.MovePosition(targetPos);
 	}
 }
