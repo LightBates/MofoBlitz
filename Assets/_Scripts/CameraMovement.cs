@@ -45,14 +45,14 @@ public class CameraMovement : MonoBehaviour {
 		float camzrad = camrot.z * Mathf.PI / 180;
 
 		//COMPUTER CONTROLS
-		//float horiz = Input.GetAxis("Horizontal");
-		//float vert = Input.GetAxis("Vertical");
+		float horiz = Input.GetAxis("Horizontal");
+		float vert = Input.GetAxis("Vertical");
 
 		//MOBILE CONTROLS
-		float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
-		float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
-		float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate));
-		float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));
+		//float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
+		//float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
+		//float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate));
+		//float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));
 
 		//Player Movement
 		Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);

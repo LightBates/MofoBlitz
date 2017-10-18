@@ -36,8 +36,10 @@ public class PlayerController : MonoBehaviour {
 	void Update()
 	{
 		//Rotates to match the camera
-		Quaternion camrot = mainCamera.transform.rotation;
-		transform.rotation = camrot;
+		//Quaternion camrot = mainCamera.transform.rotation;
+		//transform.rotation = camrot;
+
+
 
 		Vector2 targetPos = mainCamera.transform.position;
 		Vector2 targetVec = targetPos - (Vector2)transform.position;
@@ -51,10 +53,15 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//If enough time has passed between shots and the shot input is entered, fire a shot
-		if (Time.time > nextShot && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) | Input.GetKeyDown(KeyCode.Space)))
+		if (Time.time > nextShot && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) | Input.GetMouseButtonDown(0)))
 		{
+			if (Input.mousePresent)
+			{
+				Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				transform.right = (Vector2)transform.position - (Vector2)pz;
+			}
 			nextShot = Time.time + fireRate;
-			Instantiate(bullet, shotSpawn);
+			Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 		}
 	}
 
@@ -70,6 +77,7 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+
 		////Gets the current camera rotation to calculate the angle adjustment on the axes controls
 		//Vector3 camrot = mainCamera.transform.rotation.eulerAngles;
 		//float camzrad = camrot.z * Mathf.PI / 180;
