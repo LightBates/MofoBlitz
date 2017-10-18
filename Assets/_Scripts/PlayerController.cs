@@ -36,8 +36,8 @@ public class PlayerController : MonoBehaviour {
 	void Update()
 	{
 		//Rotates to match the camera
-		//Quaternion camrot = mainCamera.transform.rotation;
-		//transform.rotation = camrot;
+		Quaternion camrot = mainCamera.transform.rotation;
+		transform.rotation = camrot;
 
 
 
@@ -55,11 +55,11 @@ public class PlayerController : MonoBehaviour {
 		//If enough time has passed between shots and the shot input is entered, fire a shot
 		if (Time.time > nextShot && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) | Input.GetMouseButtonDown(0)))
 		{
-			if (Input.mousePresent)
-			{
-				Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				transform.right = (Vector2)transform.position - (Vector2)pz;
-			}
+			//if (Input.mousePresent)
+			//{
+			//	Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			//	transform.right = (Vector2)transform.position - (Vector2)pz;
+			//}
 			nextShot = Time.time + fireRate;
 			Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 		}
@@ -72,34 +72,5 @@ public class PlayerController : MonoBehaviour {
 			health -= 25;
 			Destroy(collider.gameObject);
 		}
-
-	}
-
-	void FixedUpdate()
-	{
-
-		////Gets the current camera rotation to calculate the angle adjustment on the axes controls
-		//Vector3 camrot = mainCamera.transform.rotation.eulerAngles;
-		//float camzrad = camrot.z * Mathf.PI / 180;
-
-		////COMPUTER CONTROLS
-		////float horiz = Input.GetAxis("Horizontal");
-		////float vert = Input.GetAxis("Vertical");
-
-		////MOBILE CONTROLS
-		//float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
-		//float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
-		//float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate)) * speed;
-		//float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (xRate)) * speed;
-
-		////Player Movement
-		//Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);
-		//rb2d.MovePosition(targetPos);
-
-
-		//Player Movement
-		//Vector3 targetPos = mainCamera.transform.position;
-		//rb2d.velocity = (targetPos - transform.position).normalized * speed;
-		//rb2d.MovePosition(targetPos);
 	}
 }
