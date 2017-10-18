@@ -31,7 +31,7 @@ public class EnemyBehavior : MonoBehaviour {
 			if (Time.time >= nextShot)
 			{
 				nextShot = Time.time + fireRate;
-				Instantiate(bullet, shotSpawn);
+				Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 			}
 		}
 	}
