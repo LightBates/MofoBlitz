@@ -17,12 +17,18 @@ public class GameManager : MonoBehaviour {
 		Screen.autorotateToPortraitUpsideDown = false;
 		Screen.orientation = ScreenOrientation.LandscapeLeft;
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		if (Player.GetComponent<PlayerController>().health <= 0 | score == 8)
+	void Update()
+	{
+		if (Player.GetComponent<PlayerController>().health <= 0)
 		{
 			SceneManager.LoadScene(0);
+		}
+		if (score == 8)
+		{
+			score = 0;
+			SceneManager.LoadScene(1);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBehavior : MonoBehaviour {
+public class EnemyBulletBehavior : MonoBehaviour {
 
 	public float speed;
 
@@ -19,12 +19,7 @@ public class BulletBehavior : MonoBehaviour {
 			case "Environment":
 				Destroy(gameObject);
 				break;
-			case "Enemy":
-				Destroy(collider.gameObject);
-				Destroy(gameObject);
-				GameManager.score++;
-				break;
-			case "Bullet":
+			case "PlayerBullet":
 				Destroy(gameObject);
 				break;
 		}

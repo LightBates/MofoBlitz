@@ -6,16 +6,15 @@ using UnityEngine.UI;
 public class CameraMovement : MonoBehaviour {
 
 	GameObject player;
-	float speed;
+	public float speed;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find("Player1");
-		speed = 7f;
 	}
 
 
-	void FixedUpdate () {
+	void FixedUpdate() {
 
 		//gameObject.GetComponent<Transform>().position = new Vector3(player.transform.position.x, player.transform.position.y, -13f);
 
@@ -44,15 +43,25 @@ public class CameraMovement : MonoBehaviour {
 		Vector3 camrot = transform.rotation.eulerAngles;
 		float camzrad = camrot.z * Mathf.PI / 180;
 
+
+		float vert;
+		float horiz;
+
 		//COMPUTER CONTROLS
-		//float horiz = Input.GetAxis("Horizontal");
-		//float vert = Input.GetAxis("Vertical");
+		if (Input.mousePresent)
+		{
+			horiz = Input.GetAxis("Horizontal");
+			vert = Input.GetAxis("Vertical");
+		}
 
 		//MOBILE CONTROLS
-		float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
-		float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
-		float vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate));
-		float horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));
+		else
+		{			
+			float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
+			float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
+			vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate));
+			horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));
+		}		
 
 		//Player Movement
 		Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);

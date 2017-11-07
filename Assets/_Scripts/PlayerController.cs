@@ -36,8 +36,8 @@ public class PlayerController : MonoBehaviour {
 	void Update()
 	{
 		//Rotates to match the camera
-		Quaternion camrot = mainCamera.transform.rotation;
-		transform.rotation = camrot;
+		//Quaternion camrot = mainCamera.transform.rotation;
+		//transform.rotation = camrot;
 
 
 
@@ -55,11 +55,20 @@ public class PlayerController : MonoBehaviour {
 		//If enough time has passed between shots and the shot input is entered, fire a shot
 		if (Time.time > nextShot && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) | Input.GetMouseButtonDown(0)))
 		{
-			//if (Input.mousePresent)
-			//{
-			//	Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			//	transform.right = (Vector2)transform.position - (Vector2)pz;
-			//}
+			//Mouse Controls
+			if (Input.mousePresent)
+			{
+				Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				shotSpawn.transform.right = (Vector2)transform.position - (Vector2)pz;
+			}
+			//Mobile Controls
+			else
+			{
+				Vector3 pz = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+				shotSpawn.transform.right = (Vector2)transform.position - (Vector2)pz;
+			}
+
+			
 			nextShot = Time.time + fireRate;
 			Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 		}
@@ -67,7 +76,7 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider)
 	{
-		if (collider.gameObject.tag == "Bullet")
+		if (collider.gameObject.tag == "EnemyBullet")
 		{
 			health -= 25;
 			Destroy(collider.gameObject);
