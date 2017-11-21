@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 			SceneManager.LoadScene(0);
 
 		}
-		else if (score == 8)
+		else if (score == 36)
 		{
 			score++;
 			level++;

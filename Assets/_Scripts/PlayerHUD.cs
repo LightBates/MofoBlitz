@@ -46,12 +46,12 @@ public class PlayerHUD : MonoBehaviour {
 			{
 				if (healthUI.Count % 2 == 0)
 				{
-					RawImage hp = Instantiate(hp1, new Vector3 (hp1.transform.position.x + (healthUI.Count / 2 * 50), hp1.transform.position.y), Quaternion.identity, transform);
+					RawImage hp = Instantiate(hp1, new Vector3 (hp1.transform.position.x + (healthUI.Count / 2 * 100), hp1.transform.position.y), Quaternion.identity, transform);
 					healthUI.Add(hp);
 				}
 				else
 				{
-					RawImage hp = Instantiate(hp2, new Vector3(hp2.transform.position.x + (healthUI.Count / 2 * 50), hp2.transform.position.y), Quaternion.identity, transform);
+					RawImage hp = Instantiate(hp2, new Vector3(hp2.transform.position.x + (healthUI.Count / 2 * 100), hp2.transform.position.y), Quaternion.identity, transform);
 					healthUI.Add(hp);
 				}
 			}
