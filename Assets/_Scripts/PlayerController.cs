@@ -9,19 +9,20 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D rb2d;
 	Vector3 adjustment;
 	public float speed;
-	public float health;
 
 	public Transform shotSpawn;
 	public GameObject bullet;
 	public float fireRate;
 	float nextShot;
 
+	public AudioClip fireClip;
+	public AudioClip playerHitClip;
+
 	// Use this for initialization
 	void Start()
 	{
 		mainCamera = GameObject.Find("Main Camera");
 		rb2d = gameObject.GetComponent<Rigidbody2D>();
-		health = 100;
 		
 
 		//enables gyroscope
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour {
 
 			
 			nextShot = Time.time + fireRate;
+			AudioManager.Instance.PlayAudio(fireClip);
 			Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 		}
 	}
@@ -78,8 +80,9 @@ public class PlayerController : MonoBehaviour {
 	{
 		if (collider.gameObject.tag == "EnemyBullet")
 		{
-			health -= 25;
+			AudioManager.Instance.PlayAudio(playerHitClip);
 			Destroy(collider.gameObject);
+			GameManager.Instance.UpdateHealth(-1);					
 		}
 	}
 }

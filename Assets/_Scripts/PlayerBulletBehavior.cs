@@ -6,6 +6,9 @@ public class PlayerBulletBehavior : MonoBehaviour {
 
 	public float speed;
 
+	public AudioClip enemyHitClip;
+
+
 	// Use this for initialization
 	void Start () {
 		gameObject.GetComponent<Rigidbody2D>().velocity = transform.forward * speed;
@@ -20,6 +23,7 @@ public class PlayerBulletBehavior : MonoBehaviour {
 				Destroy(gameObject);
 				break;
 			case "Enemy":
+				AudioManager.Instance.PlayAudio(enemyHitClip);
 				Destroy(collider.gameObject);
 				Destroy(gameObject);
 				break;

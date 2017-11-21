@@ -8,11 +8,29 @@ public class CameraMovement : MonoBehaviour {
 	GameObject player;
 	public float speed;
 
+	public float levelTop;
+	public float levelBottom;
+
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find("Player1");
+		//Orient();
 	}
 
+	public void Orient()
+	{
+		if (!Input.mousePresent)
+		{
+			float gyroAttY = Input.gyro.attitude.eulerAngles.y;
+			if (gyroAttY > 150)
+				gyroAttY = 150;
+			else if (gyroAttY < 30)
+				gyroAttY = 30;
+			float targety = ((gyroAttY - 30) / 120) * (levelTop - levelBottom) + levelBottom;
+
+			gameObject.transform.position = new Vector3(transform.position.x, targety, transform.position.z);
+		}		
+	}
 
 	void FixedUpdate() {
 
@@ -33,11 +51,6 @@ public class CameraMovement : MonoBehaviour {
 		//Rotates the Map to be consistent with Gravity
 		Quaternion rot = Quaternion.Euler(0f, 0f, newAngle);
 		gameObject.GetComponent<Transform>().rotation = rot;
-
-
-
-
-
 
 		//Gets the current camera rotation to calculate the angle adjustment on the axes controls
 		Vector3 camrot = transform.rotation.eulerAngles;
@@ -60,11 +73,14 @@ public class CameraMovement : MonoBehaviour {
 			float xRate = Mathf.Round(Input.gyro.rotationRateUnbiased.x * 100f) / 100f;
 			float yRate = Mathf.Round(Input.gyro.rotationRateUnbiased.y * 100f) / 100f;
 			vert = (Mathf.Sin(camzrad) * (-yRate) + Mathf.Cos(camzrad) * (xRate));
-			horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));
-		}		
+			horiz = (Mathf.Cos(camzrad) * (-yRate) + Mathf.Sin(camzrad) * (-xRate));			
+		}
 
-		//Player Movement
 		Vector3 targetPos = transform.position + new Vector3(horiz * speed * Time.deltaTime, vert * speed * Time.deltaTime);
+		if (targetPos.y > levelTop)
+			targetPos.y = levelTop;
+		else if (targetPos.y < levelBottom)
+			targetPos.y = levelBottom;
 		gameObject.GetComponent<Rigidbody2D>().MovePosition(targetPos);
 	}
 }

@@ -14,6 +14,8 @@ public class EnemyBehavior : MonoBehaviour {
 
 	public GameObject player;
 	Rigidbody2D rb2d;
+	
+	public AudioClip enemyFireClip;
 
 	// Use this for initialization
 	void Start () {
@@ -40,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour {
 			if (Time.time >= nextShot)
 			{
 				nextShot = Time.time + fireRate;
+				AudioManager.Instance.PlayAudio(enemyFireClip);
 				Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 			}
 
@@ -51,4 +54,5 @@ public class EnemyBehavior : MonoBehaviour {
 			}
 		}
 	}
+	
 }

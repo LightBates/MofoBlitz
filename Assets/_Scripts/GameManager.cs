@@ -6,29 +6,60 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
 
-	public GameObject Player;
 	public static int score;
+	public static int health { get; private set; }
+
+	public static GameManager Instance = null;
+	private int level;
+
+	void Awake ()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else if (Instance != this)
+		{
+			Destroy(gameObject);
+		}
+		DontDestroyOnLoad(gameObject);
+
+		Reset();
+	}
+
+	public void Reset()
+	{
+		score = 0;
+		level = 1;
+		health = 8;
+	}
+
 
 	// Use this for initialization
 	void Start () {
-		score = 0;
-		Screen.autorotateToLandscapeRight = false;
-		Screen.autorotateToPortrait = false;
-		Screen.autorotateToPortraitUpsideDown = false;
-		Screen.orientation = ScreenOrientation.LandscapeLeft;
+		
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if (Player.GetComponent<PlayerController>().health <= 0)
+		if (health <= 0)
 		{
+			Reset();
 			SceneManager.LoadScene(0);
+
 		}
-		if (score == 8)
+		else if (score == 8)
 		{
-			score = 0;
-			SceneManager.LoadScene(1);
+			score++;
+			level++;
+			SceneManager.LoadScene(level);
 		}
+	}
+
+	public void UpdateHealth(int modifier)
+	{
+		health = health + modifier;
+		PlayerHUD.Instance.UpdateHealth();
 	}
 }
