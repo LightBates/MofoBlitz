@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4ae278163e4137c43b0e4a056a254175
-timeCreated: 1511292429
+timeCreated: 1511338059
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -54,7 +54,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -100,6 +100,24 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -110,7 +128,7 @@ TextureImporter:
         x: 24
         y: 16
         width: 16
-        height: 32
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,7 +142,7 @@ TextureImporter:
         x: 88
         y: 16
         width: 16
-        height: 32
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,8 +167,8 @@ TextureImporter:
       name: Cone Walk - Back_3
       rect:
         serializedVersion: 2
-        x: 218
-        y: 17
+        x: 216
+        y: 16
         width: 16
         height: 32
       alignment: 0
@@ -180,7 +198,7 @@ TextureImporter:
         x: 344
         y: 16
         width: 16
-        height: 32
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,8 +209,8 @@ TextureImporter:
       name: Cone Walk - Back_6
       rect:
         serializedVersion: 2
-        x: 409
-        y: 17
+        x: 408
+        y: 16
         width: 16
         height: 32
       alignment: 0
