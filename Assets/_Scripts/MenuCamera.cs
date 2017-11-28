@@ -25,15 +25,15 @@ public class MenuCamera : MonoBehaviour {
 		if (!Input.mousePresent)
 		{
 			float gyroAttY = Input.gyro.attitude.eulerAngles.y;
-			if (gyroAttY < 70 || gyroAttY > 110)
-			{
-				startButton.interactable = false;
-				startText.text = "Hold Device Straight Forward";
-			}
-			else
+			if ((gyroAttY > 70 & gyroAttY < 110) || (gyroAttY > 250 & gyroAttY < 290))
 			{
 				startButton.interactable = true;
 				startText.text = "Start";
+			}
+			else
+			{
+				startButton.interactable = false;
+				startText.text = "Hold Device Straight Forward";
 			}
 		}
 	}
