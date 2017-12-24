@@ -30,7 +30,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 	void OnDestroy ()
 	{
-		GameManager.score++;
+		GameManager.Instance.ScoreUp();
 	}
 
 	// Update is called once per frame
@@ -42,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour {
 			if (Time.time >= nextShot)
 			{
 				nextShot = Time.time + fireRate;
+				gameObject.GetComponent<Animator>().SetTrigger("Attack");
 				AudioManager.Instance.PlayAudio(enemyFireClip);
 				Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
 			}

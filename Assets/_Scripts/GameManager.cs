@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-
-	public static int score;
+	[SerializeField]
+	public int score;
+	[SerializeField]
+	public int totalscore;
+	public bool playing;
 	public static int health { get; private set; }
 
 	public static GameManager Instance = null;
@@ -30,7 +33,8 @@ public class GameManager : MonoBehaviour {
 	public void Reset()
 	{
 		score = 0;
-		level = 1;
+		totalscore = 0;
+		level = 0;
 		health = 8;
 	}
 
@@ -40,21 +44,44 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
+	public void ScoreUp()
+	{
+		if (playing)
+		{
+			score++;
+		}
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
-		if (health <= 0)
+		if (health <= 0 && playing)
 		{
-			Reset();
-			SceneManager.LoadScene(0);
+			playing = false;
+			totalscore += score;
+			score = 0;
+			SceneManager.LoadScene(5);
+		}
+		else if (score > 0 && score % 36 == 0)
+		{
+			totalscore += score;
+			score = 0;
+			SceneManager.LoadScene(4);
+		}
+	}
 
-		}
-		else if (score == 36)
-		{
-			score++;
+	public string GetScore()
+	{
+		return totalscore.ToString();
+	}
+
+	public void NextLevel()
+	{
+		if (level < 3)
 			level++;
-			SceneManager.LoadScene(level);
-		}
+		else
+			level = 1;
+		SceneManager.LoadScene(level);
 	}
 
 	public void UpdateHealth(int modifier)

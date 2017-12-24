@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
 
-	[SerializeField]
-	private GameManager gameManager;
-
 
 	void Awake () {
 		//if (GameManager.Instance == null)
@@ -24,11 +21,18 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void StartPressed()
 	{
-		SceneManager.LoadScene(1);
+		GameManager.Instance.playing = true;
+		GameManager.Instance.NextLevel();
 	}
 
 	public void ExitPressed()
 	{
 		Application.Quit();
+	}
+
+	public void MenuPressed()
+	{
+		GameManager.Instance.Reset();
+		SceneManager.LoadScene(0);
 	}
 }

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	
+
+	public SingleJoystick singleJoystick;
+
 	private GameObject mainCamera;
 	private Rigidbody2D rb2d;
 	Vector3 adjustment;
@@ -53,23 +55,71 @@ public class PlayerController : MonoBehaviour {
 			rb2d.velocity = targetVec.normalized * speed;
 		}
 
+
+
+
 		//If enough time has passed between shots and the shot input is entered, fire a shot
-		if (Time.time > nextShot && ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) | Input.GetMouseButtonDown(0)))
+		if (Time.time > nextShot && ((Input.touchCount > 0) | Input.GetMouseButtonDown(0)))
 		{
 			//Mouse Controls
 			if (Input.mousePresent)
 			{
-				Vector3 pz = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				shotSpawn.transform.right = (Vector2)transform.position - (Vector2)pz;
+				Vector3 pza = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				shotSpawn.transform.right = (Vector2)transform.position - (Vector2)pza;
 			}
 			//Mobile Controls
+			
 			else
 			{
-				Vector3 pz = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				shotSpawn.transform.right = (Vector2)transform.position - (Vector2)pz;
+				Vector3 pzj = singleJoystick.GetInputDirection();
+				//Vector3 pz = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+				//shotSpawn.transform.right = (Vector2)transform.position - (Vector2)pz;
+				shotSpawn.transform.right = -pzj;
 			}
 
-			
+			Vector3 pz = singleJoystick.GetInputDirection();
+			if (pz.x < 0)
+			{
+				gameObject.GetComponent<SpriteRenderer>().flipX = false;
+				gameObject.GetComponent<Animator>().SetBool("Left", true);
+				gameObject.GetComponent<Animator>().SetBool("Right", false);
+			}
+			else if (pz.x > 0)
+			{
+				if (pz.y == 0)
+				{
+					gameObject.GetComponent<SpriteRenderer>().flipX = true;
+				}
+				if (pz.y != 0)
+				{
+					gameObject.GetComponent<SpriteRenderer>().flipX = false;
+				}
+				gameObject.GetComponent<Animator>().SetBool("Left", false);
+				gameObject.GetComponent<Animator>().SetBool("Right", true);
+			}
+			else
+			{
+				gameObject.GetComponent<Animator>().SetBool("Left", false);
+				gameObject.GetComponent<Animator>().SetBool("Right", false);
+			}
+
+			if (pz.y < 0)
+			{
+				gameObject.GetComponent<Animator>().SetBool("Front", true);
+				gameObject.GetComponent<Animator>().SetBool("Back", false);
+			}
+			else if (pz.y > 0)
+			{
+				gameObject.GetComponent<Animator>().SetBool("Front", false);
+				gameObject.GetComponent<Animator>().SetBool("Back", true);
+			}
+			else
+			{
+				gameObject.GetComponent<Animator>().SetBool("Front", false);
+				gameObject.GetComponent<Animator>().SetBool("Back", false);
+			}
+
+
 			nextShot = Time.time + fireRate;
 			AudioManager.Instance.PlayAudio(fireClip);
 			Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
@@ -84,5 +134,6 @@ public class PlayerController : MonoBehaviour {
 			Destroy(collider.gameObject);
 			GameManager.Instance.UpdateHealth(-1);					
 		}
+
 	}
 }
